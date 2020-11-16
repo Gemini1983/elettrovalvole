@@ -14,7 +14,19 @@ export class RequestService {
 
     constructor(private httpClient: HttpClient, platformLocation: PlatformLocation) {
 
+      if (environment.production) {
+
+        this.urlBase = (platformLocation as any).location.origin;
+
+        if (!this.urlBase) {
+          this.urlBase = window.location.protocol + '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '');
+          console.log('URL base: ' + this.urlBase);
+        }
+      } else {
         this.urlBase = environment.urlBase;
+      }
     }
 
     public get_valves(): Observable<any> {
