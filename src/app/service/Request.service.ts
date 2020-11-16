@@ -17,6 +17,7 @@ export class RequestService {
       if (environment.production) {
 
         this.urlBase = (platformLocation as any).location.origin;
+        console.log(this.urlBase);
 
         if (!this.urlBase) {
           this.urlBase = window.location.protocol + '//' +
@@ -38,7 +39,7 @@ export class RequestService {
             'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'})
         };
-        return this.httpClient.get<Object>(this.urlBase + '/valves/', httpOptions);
+        return this.httpClient.get<Object>(this.urlBase + '/api/valves/', httpOptions);
     }
 
 
