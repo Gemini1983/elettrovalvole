@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ListvalvesComponent } from './listvalves/listvalves.component';
 import { ValveComponent } from './valve/valve.component';
 import { TaskComponent } from './task/task.component';
+import { HeaderComponent } from './header/header.component';
 
 const appRoutes: Routes = [
   { path: 'valves', component: ListvalvesComponent },
@@ -19,7 +20,8 @@ const appRoutes: Routes = [
     AppComponent,
     ListvalvesComponent,
     ValveComponent,
-    TaskComponent
+    TaskComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
