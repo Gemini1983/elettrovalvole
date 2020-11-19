@@ -1,21 +1,29 @@
-<div class="row d-flex justify-content-center">
-  <div class="col-sm-7">
-    <div *ngFor="let item of valves">
-      <div class=" clearfix">
-        <div class="row m-2 p-2 border border-4">
-          <div class="col-2">
-            <h4>{{item.id}}</h4>
-          </div>
-          <div class="col-6 ">
-            <h4>{{item.descrizione}}</h4>
-          </div>
-
-          <div class="col-4">
-            {{item.stato}} <i class="fas fa-acorn fa-lg"></i>
-          </div>
-
-        </div>
+<div class="row  justify-content-center">
+  <div class="col-10">
+    <div class="row">
+      <div class="col-12 ml-4">
+        <h3>Valvole</h3>
       </div>
+    </div>
+
+    <div *ngFor="let item of valves">
+        <button (click)="clickValve(item.id)" type="button" class="btn btn-block">
+          <div class="row border border-4">
+            <div class="col-1 pt-2 border">
+              <h4>{{item.id}}</h4>
+            </div>
+            <div class="col-7 pt-2 border">
+              <h4>{{item.descrizione}}</h4>
+            </div>
+
+            <div class="col-xs-4 border" *ngIf="item.stato=='aperta'" >
+              <h4>Aperta <i class=" fas fa-faucet fa-1.5x fa-faucet-open"></i> </h4>
+            </div>
+            <div class="col-xs-4  pt-2 border" *ngIf="item.stato=='chiusa'" >
+              <h4>Chiusa <i class=" fas fa-faucet fa-1.5x"></i></h4>
+            </div>
+          </div>
+        </button>
     </div>
   </div>
 </div>

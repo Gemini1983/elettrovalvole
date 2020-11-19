@@ -12,11 +12,19 @@ import { PlatformLocation } from '@angular/common';
 export class RequestService {
     private urlBase: string;
 
+    private httpOptions = {
+      headers: new HttpHeaders({'Content-Type':  'application/json',
+      'Access-Control-Allow-Credentials' : 'true',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'})
+  };
+
     constructor(private httpClient: HttpClient, platformLocation: PlatformLocation) {
 
       if (environment.production) {
 
-        this.urlBase = (platformLocation as any).location.origin;
+        this.urlBase = (platformLocation as any).location.origin+'/api';
         console.log(this.urlBase);
 
         if (!this.urlBase) {
@@ -31,17 +39,11 @@ export class RequestService {
     }
 
     public get_valves(): Observable<any> {
-
-        let httpOptions = {
-            headers: new HttpHeaders({'Content-Type':  'application/json',
-            'Access-Control-Allow-Credentials' : 'true',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'})
-        };
-        return this.httpClient.get<Object>(this.urlBase + '/api/valves/', httpOptions);
+       return this.httpClient.get<Object>(this.urlBase + '/valves/', this.httpOptions);
     }
-
+    public get_valve(idValve): Observable<any> {
+      return this.httpClient.get<Object>(this.urlBase + '/valves/'+idValve, this.httpOptions);
+   }
 
 
 

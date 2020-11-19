@@ -11,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 
 const appRoutes: Routes = [
   { path: 'valves', component: ListvalvesComponent },
+  { path: 'valve', component: ValveComponent },
   { path: '',   redirectTo: '/valves', pathMatch: 'full' }   //start page configurata anche in app.component.ts
   //{ path: '**', redirectTo: '/application', pathMatch: 'full' }
 ];

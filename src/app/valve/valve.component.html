@@ -1,1 +1,25 @@
-<p>valve works!</p>
+<div class="row  justify-content-center" *ngIf="valve">
+  <div class="col-10 border">
+
+    <div class="row">
+      <div class="col-xs-12">
+        <button type="button" class="btn btn-link" (click)="redirectHome()">
+          <h4>< {{valve.descrizione}}</h4>
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-3">
+        <h5>Stato:</h5>
+      </div>
+      <div class="col-3" *ngIf="valve.stato==='chiusa'">
+        <h5>CHIUSA</h5>
+      </div>
+      <div class="col-3 offset-2" *ngIf="valve.stato==='chiusa'">
+        <button>APRI</button>
+      </div>
+    </div>
+
+  </div>
+</div>
