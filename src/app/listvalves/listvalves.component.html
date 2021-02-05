@@ -9,17 +9,17 @@
     <div *ngFor="let item of valves">
         <button (click)="clickValve(item.id)" type="button" class="btn btn-block">
           <div class="row border border-4">
-            <div class="col-1 pt-2 border">
+            <div class="col-1 pt-2">
               <h4>{{item.id}}</h4>
             </div>
-            <div class="col-7 pt-2 border">
+            <div class="col-7 pt-2">
               <h4>{{item.descrizione}}</h4>
             </div>
 
-            <div class="col-xs-4 border" *ngIf="item.stato=='aperta'" >
+            <div class="col-xs-4 pt-2" *ngIf="item.stato=='aperta'" >
               <h4>Aperta <i class=" fas fa-faucet fa-1.5x fa-faucet-open"></i> </h4>
             </div>
-            <div class="col-xs-4  pt-2 border" *ngIf="item.stato=='chiusa'" >
+            <div class="col-xs-4 pt-2" *ngIf="item.stato=='chiusa'" >
               <h4>Chiusa <i class=" fas fa-faucet fa-1.5x"></i></h4>
             </div>
           </div>

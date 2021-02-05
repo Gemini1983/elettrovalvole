@@ -7,47 +7,63 @@ import { Task, Valve, Cron } from '../model/models';
 import { PlatformLocation } from '@angular/common';
 
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root',
+})
 export class RequestService {
-    private urlBase: string;
+  private urlBase: string;
 
-    private httpOptions = {
-      headers: new HttpHeaders({'Content-Type':  'application/json',
-      'Access-Control-Allow-Credentials' : 'true',
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Credentials': 'true',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'})
+      'Access-Control-Allow-Headers':
+        'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
+    }),
   };
 
-    constructor(private httpClient: HttpClient, platformLocation: PlatformLocation) {
+  constructor(
+    private httpClient: HttpClient,
+    platformLocation: PlatformLocation
+  ) {
+    if (environment.production) {
+      this.urlBase = (platformLocation as any).location.origin + '/api';
+      console.log(this.urlBase);
 
-      if (environment.production) {
-
-        this.urlBase = (platformLocation as any).location.origin+'/api';
-        console.log(this.urlBase);
-
-        if (!this.urlBase) {
-          this.urlBase = window.location.protocol + '//' +
-            window.location.hostname +
-            (window.location.port ? ':' + window.location.port : '');
-          console.log('URL base: ' + this.urlBase);
-        }
-      } else {
-        this.urlBase = environment.urlBase;
+      if (!this.urlBase) {
+        this.urlBase =
+          window.location.protocol +
+          '//' +
+          window.location.hostname +
+          (window.location.port ? ':' + window.location.port : '');
+        console.log('URL base: ' + this.urlBase);
       }
+    } else {
+      this.urlBase = environment.urlBase;
     }
+  }
 
-    public get_valves(): Observable<any> {
-       return this.httpClient.get<Object>(this.urlBase + '/valves/', this.httpOptions);
-    }
-    public get_valve(idValve): Observable<any> {
-      return this.httpClient.get<Object>(this.urlBase + '/valves/'+idValve, this.httpOptions);
-   }
+  public get_valves(): Observable<any> {
+    return this.httpClient.get<Object>(
+      this.urlBase + '/valves/',
+      this.httpOptions
+    );
+  }
+  public get_valve(idValve): Observable<any> {
+    return this.httpClient.get<Object>(
+      this.urlBase + '/valves/' + idValve,
+      this.httpOptions
+    );
+  }
 
+  public post_valve(idValve, state, time): Observable<any> {
+    let url = this.urlBase + '/valves/' + idValve + '/?stato=' + state;
+    if (time !== 0) url = url + '&tempo=' + time*60;
+    return this.httpClient.post<Object>(url, null, this.httpOptions);
+  }
 
-
-/*
+  /*
 
     public delete_dossier(dossier: Dossier): Observable<Object> {
 
@@ -100,5 +116,4 @@ export class RequestService {
     }
 
 */
-
 }

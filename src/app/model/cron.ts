@@ -1,4 +1,4 @@
-export class Cron { 
+export class Cron {
     minuto: string;
     ora: string;
     giorno_mese: string;

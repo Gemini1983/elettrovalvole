@@ -1,25 +1,118 @@
 <div class="row  justify-content-center" *ngIf="valve">
-  <div class="col-10 border">
+  <div class="col-10 ">
 
     <div class="row">
-      <div class="col-xs-12">
-        <button type="button" class="btn btn-link" (click)="redirectHome()">
-          <h4>< {{valve.descrizione}}</h4>
+      <div class="col-12">
+        <button type="button" class="btn" (click)="redirectHome()">
+          <h4>
+            < </h4>
         </button>
       </div>
+      <div class="col-4">
+      </div>
+      <div class="col-4 descrizione">
+        <h2>{{valve.descrizione}}</h2>
+      </div>
+
     </div>
 
-    <div class="row">
-      <div class="col-3">
-        <h5>Stato:</h5>
+    <div class="row" *ngIf="valve.stato==='chiusa'">
+      <div class="col-8 pt-2">
+        <h5>Stato: CHIUSA</h5>
       </div>
-      <div class="col-3" *ngIf="valve.stato==='chiusa'">
-        <h5>CHIUSA</h5>
-      </div>
-      <div class="col-3 offset-2" *ngIf="valve.stato==='chiusa'">
-        <button>APRI</button>
+      <div class="col-3 ">
+        <button type="button" class="btn btn-info" (click)="open(modalOpen)">APRI</button>
       </div>
     </div>
+
+    <div class="row" *ngIf="valve.stato==='aperta'">
+      <div class="col-8 pt-2">
+        <h5>Stato: APERTA</h5>
+      </div>
+      <div class="col-3 ">
+        <button type="button" class="btn btn-info" (click)="close()">CHIUDI</button>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+
+        <th scope="col">Descrizione</th>
+        <th scope="col">ORA</th>
+        <th scope="col">MINUTO</th>
+        <th scope="col">GIORNO MESE</th>
+        <th scope="col">MESE</th>
+        <th scope="col">GIORNO SETTIMANA</th>
+        <th scope="col">TEMPO APERTURA</th>
+        <th scope="col">ABILITATO</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of valve.tasks">
+          <td>{{task.descrizione}}
+          </td>
+          <td>{{task.cron.ora}}
+          </td>
+          <td>{{task.cron.minuto}}
+          </td>
+          <td>{{task.cron.giorno_mese}}
+          </td>
+          <td>{{task.cron.mese}}
+          </td>
+          <td>{{task.cron.giorno_settimana}}
+          </td>
+          <td>{{task.tempo_apertura}}
+          </td>
+          <td>{{task.abilitato}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <!--
+
+    "numero_elettrovalvola": "1",
+    "descrizione": "nuovo aggiornamento",
+
+
+    "ora": "9",
+    "minuto": "2",
+    "giorno_mese": "1",
+    "mese": "*",
+    "giorno_settimana": "*",
+
+    "tempo_apertura": "10"
+
+    "abilitato": true,
+
+    -->
 
   </div>
 </div>
+
+
+
+
+<ng-template #modalOpen let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"></h4>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <div class="row">
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Minuti apertura:</span>
+            </div>
+            <input type="number" [(ngModel)]="this.minutiApertura" name="minutiApertura"
+              aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Apri')">APRI</button>
+  </div>
+</ng-template>

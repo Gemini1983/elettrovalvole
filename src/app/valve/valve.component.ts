@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cron, Task, Valve } from '../model/models';
 import { RequestService } from '../service/Request.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'app-valve',
@@ -11,11 +13,15 @@ import { RequestService } from '../service/Request.service';
 export class ValveComponent implements OnInit {
   idValve: any;
   valve: Valve;
+  closeResult = '';
+  minutiApertura: number = 5;
+  aperturaIndefinita: boolean;
 
   constructor(
     private requestService: RequestService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -23,6 +29,7 @@ export class ValveComponent implements OnInit {
       this.idValve = +params['idValve'] || 0;
       this.requestService.get_valve(this.idValve).subscribe((responseValve) => {
         //Creazione struttura dei dati
+        console.log(responseValve);
         var tasks = [];
         var temp_task = null;
         var temp_cron = null;
@@ -31,10 +38,10 @@ export class ValveComponent implements OnInit {
           temp_task = null;
           temp_cron = null;
           temp_cron = new Cron(
-            task.giorno_mese,
             task.minuto,
             task.ora,
             task.giorno_mese,
+            task.mese,
             task.giorno_settimana
           );
           temp_task = new Task(
@@ -58,5 +65,48 @@ export class ValveComponent implements OnInit {
 
   redirectHome() {
     this.router.navigate(['/valves']);
+  }
+
+  open(content) {
+    this.modalService
+      .open(content, {
+        size: 'sm',
+        backdrop: 'static',
+        ariaLabelledBy: 'modal-basic-title',
+      })
+      .result.then(
+        (result) => {
+          if (result === 'Apri') {
+            this.requestService
+              .post_valve(this.idValve, 'aperta', this.minutiApertura)
+              .subscribe((responseValve) => {
+                setTimeout(() => {
+                  this.ngOnInit();
+                }, 1000);
+              });
+          }
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
+  close() {
+    this.requestService
+      .post_valve(this.idValve, 'chiusa', 0)
+      .subscribe((responseValve) => {
+        this.ngOnInit();
+      });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

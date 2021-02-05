@@ -8,6 +8,8 @@ import { ListvalvesComponent } from './listvalves/listvalves.component';
 import { ValveComponent } from './valve/valve.component';
 import { TaskComponent } from './task/task.component';
 import { HeaderComponent } from './header/header.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 const appRoutes: Routes = [
   { path: 'valves', component: ListvalvesComponent },
@@ -27,10 +29,12 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only
     ),
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
